@@ -16,6 +16,7 @@ date: |
   | Table of Contents:
 output: 
   html_document:
+    keep_md: true
     theme: cosmo
     highlight: espresso
     toc: true
@@ -85,7 +86,7 @@ map_light <- function(...) {
 
 <br>
 
-##4. Total population
+##4. Figure 1: Total population
 
 Describe summary characteristics of the population.
 
@@ -368,6 +369,7 @@ ggsave(file="S1_Fig.pdf", width=12, height=12, dpi=300,
 
 ```
 
+<br>
 
 ##13. Correlation between variables.
 
@@ -406,7 +408,7 @@ summary(table1)
 
 <br>
  
-##16. Figure 2: TB case notification rates
+##15. Figure 2: TB case notification rates
  
 Plot overall TB case notification rates.
 
@@ -472,9 +474,9 @@ ggsave(file="Figure2.pdf", width=10, height=8, dpi=300,
 
 ```
 
+<br>
 
-
-##17.Spatial modelling
+##16. Spatial modelling
 
 Make the spatial correlation matrices.
 
@@ -575,7 +577,7 @@ all_0 <- brm(bf(n_cases ~
           m_f_adult_ratio +
           prop_adults +
           smr_ratio +
-          offset(log_total)),
+          offset(log(total))),
           data=dat, 
           family='poisson',
           prior = prior,
@@ -592,7 +594,7 @@ all_1 <- brm(bf(n_cases ~
           m_f_adult_ratio +
           prop_adults +
           smr_ratio +
-          offset(log_total)),
+          offset(log(total))),
           data=dat, 
           family='poisson',
           prior = prior,
@@ -610,7 +612,7 @@ all_2 <- brm(bf(n_cases ~
           m_f_adult_ratio +
           prop_adults +
           smr_ratio +
-          offset(log_total)),
+          offset(log(total))),
           data=dat, 
           family='poisson',
           prior = prior,
@@ -629,7 +631,7 @@ all_3 <- brm(bf(n_cases ~
           m_f_adult_ratio +
           prop_adults +
           smr_ratio +
-          offset(log_total)),
+          offset(log(total))),
           data=dat, 
           family='poisson',
           prior = prior,
@@ -647,7 +649,7 @@ all_4 <- brm(bf(n_cases ~
           m_f_adult_ratio +
           prop_adults +
           smr_ratio +
-          offset(log_total)),
+          offset(log(total))),
           data=dat, 
           family='poisson',
           prior = prior,
@@ -665,7 +667,7 @@ all_5 <- brm(bf(n_cases ~
           m_f_adult_ratio +
           prop_adults +
           smr_ratio +
-          offset(log_total)),
+          offset(log(total))),
           data=dat, 
           family='poisson',
           prior = prior,
@@ -683,7 +685,7 @@ all_6 <- brm(bf(n_cases ~
           m_f_adult_ratio +
           prop_adults +
           smr_ratio +
-          offset(log_total)),
+          offset(log(total))),
           data=dat, 
           family='poisson',
           prior = prior,
@@ -810,7 +812,7 @@ micro_0 <- brm(bf(n_micro_cases ~
           m_f_adult_ratio +
           prop_adults +
           smr_ratio +
-          offset(log_total)),
+          offset(log(total))),
           data=dat, 
           family='poisson',
           prior = prior,
@@ -827,7 +829,7 @@ micro_1 <- brm(bf(n_micro_cases ~
           m_f_adult_ratio +
           prop_adults +
           smr_ratio +
-          offset(log_total)),
+          offset(log(total))),
           data=dat, 
           family='poisson',
           prior = prior,
@@ -845,7 +847,7 @@ micro_2 <- brm(bf(n_micro_cases ~
           m_f_adult_ratio +
           prop_adults +
           smr_ratio +
-          offset(log_total)),
+          offset(log(total))),
           data=dat, 
           family='poisson',
           prior = prior,
@@ -864,7 +866,7 @@ micro_3 <- brm(bf(n_micro_cases ~
           m_f_adult_ratio +
           prop_adults +
           smr_ratio +
-          offset(log_total)),
+          offset(log(total))),
           data=dat, 
           family='poisson',
           prior = prior,
@@ -882,7 +884,7 @@ micro_4 <- brm(bf(n_micro_cases ~
           m_f_adult_ratio +
           prop_adults +
           smr_ratio +
-          offset(log_total)),
+          offset(log(total))),
           data=dat, 
           family='poisson',
           prior = prior,
@@ -900,7 +902,7 @@ micro_5 <- brm(bf(n_micro_cases ~
           m_f_adult_ratio +
           prop_adults +
           smr_ratio +
-          offset(log_total)),
+          offset(log(total))),
           data=dat, 
           family='poisson',
           prior = prior,
@@ -918,7 +920,7 @@ micro_6 <- brm(bf(n_micro_cases ~
           m_f_adult_ratio +
           prop_adults +
           smr_ratio +
-          offset(log_total)),
+          offset(log(total))),
           data=dat, 
           family='poisson',
           prior = prior,
@@ -1093,48 +1095,6 @@ ests_all_6<- tidy(exp(fixef(all_6)))
 ests_all_6 %>%
   kable()
 
-
-#Plot posterior distributions
-facet_names <- c(
-                    `b_log_popdens` = "Population density (per square km)",
-                    `b_mean_people_per_hh` = "Mean people per household",
-                    `b_log_clinic_distance` = "Distance to TB clinic",
-                    `b_mwi11povcons200` = "Percentage living in poverty",
-                    `b_m_f_adult_ratio` = "Male:female adult ratio",
-                    `b_prop_adults` = "Percentage adults",
-                    `b_smr_ratio` = "Smear pos:smear neg ratio")
-
-plotpars <- c("b_log_popdens", "b_mean_people_per_hh", "b_log_clinic_distance",
-              "b_mwi11povcons200", "b_m_f_adult_ratio", "b_prop_adults", 
-              "Smear pos:smear neg ratio")
-
-post_samples_all_6 <- posterior_samples(all_6, "b")
-plot_post_all_6 <- gather(post_samples_all_6, variable, value) %>%
-  filter(variable %in% plotpars)
-plot_post_all_6$variable <- factor(plot_post_all_6$variable)
-
-plot_post_all_6$variable <- fct_relevel(plot_post_all_6$variable,"b_Intercept")
-
-plot_post_all_6 %>% 
-  filter(variable %in% plotpars) %>%
-  ggplot(aes(value)) +
-  geom_density(fill="firebrick", colour="firebrick", alpha=0.5) +
-  facet_wrap(~variable, nrow = 2, labeller = as_labeller(facet_names)) +
-  geom_vline(xintercept = 0, linetype="dashed") +
-  theme_bw() +
-  xlim(-5,5) +
-  xlab("Estimated effect on TB case notification rate") +
-  ylab("") +
-  theme(axis.ticks.y = element_blank(),
-        axis.text.y = element_blank()) -> post_all_6
-
-post_all_6
-
-
-ggsave(file="posterior1.pdf", width=12, height=6, dpi=300, 
-       path = here("figures"))
-
-
 ```
 
 
@@ -1148,10 +1108,6 @@ summary(micro_4)
 
 #Model diagnostics
 plot(micro_4, ask = FALSE)
-
-Resid.zip.brm <- residuals(micro_4, type='pearson')[,'Estimate']
-Fitted.zip.brm <- exp(fitted(micro_4, scale='linear')[1:nrow(dat),'Estimate'])
-ggplot(data=NULL, aes(y=Resid.zip.brm, x=Fitted.zip.brm)) + geom_point()
 
 pp_micro_4 <- as_tibble(predict(micro_4))
 pp_micro_4 <- dat %>%
@@ -1184,52 +1140,11 @@ ests_micro_4<- tidy(exp(fixef(micro_4)))
 ests_micro_4 %>%
   kable()
 
-
-#Plot posterior distributions
-facet_names <- c(
-                    `b_log_popdens` = "Population density (per square km)",
-                    `b_mean_people_per_hh` = "Mean people per household",
-                    `b_log_clinic_distance` = "Distance to TB clinic",
-                    `b_mwi11povcons200` = "Percentage living in poverty",
-                    `b_m_f_adult_ratio` = "Male:female adult ratio",
-                    `b_prop_adults` = "Percentage adults",
-                    `b_smr_ratio` = "Smear pos:smear neg ratio")
-
-plotpars <- c("b_log_popdens", "b_mean_people_per_hh", "b_log_clinic_distance",
-              "b_mwi11povcons200", "b_m_f_adult_ratio", "b_prop_adults", "Smear pos:smear neg ratio")
-
-post_samples_micro_4 <- posterior_samples(micro_4, "b")
-plot_post_micro_4 <- gather(post_samples_micro_4, variable, value) %>%
-  filter(variable %in% plotpars)
-plot_post_micro_4$variable <- factor(plot_post_micro_4$variable)
-
-plot_post_micro_4$variable <- fct_relevel(plot_post_micro_4$variable,"b_Intercept")
-
-plot_post_micro_4 %>% 
-  filter(variable %in% plotpars) %>%
-  ggplot(aes(value)) +
-  geom_density(fill="firebrick", colour="firebrick", alpha=0.5) +
-  facet_wrap(~variable, nrow = 2, labeller = as_labeller(facet_names)) +
-  geom_vline(xintercept = 0, linetype="dashed") +
-  theme_bw() +
-  xlim(-5,5) +
-  xlab("Estimated effect on TB case notification rate per unit increase in variable") +
-  ylab("") +
-  theme(axis.ticks.y = element_blank(),
-        axis.text.y = element_blank()) -> post_micro_4
-
-post_micro_4
-
-
-ggsave(file="posterior2.pdf", width=12, height=6, dpi=300, 
-       path = here("figures"))
-
-
 ```
 
 <br>
 
-## 18. Figure 3: Marginal Effects plot
+## 17. Figure 3: Marginal Effects plot
 
 ```{r}
 me <- marginal_effects(all_6, 
@@ -1241,7 +1156,7 @@ p1 <- p1 %>%
   mutate(rate=(estimate__/total)*100000) %>%
   mutate(l95 = (lower__/total)*100000) %>%
   mutate(u95 = (upper__/total)*100000) %>%
-  select(rate, l95,u95, value=mean_people_per_hh) %>% 
+  dplyr::select(rate, l95,u95, value=mean_people_per_hh) %>% 
   mutate(type="All TB") %>%
   mutate(param = "Mean people per household") 
 
@@ -1250,7 +1165,7 @@ p2 <- p2 %>%
   mutate(rate=(estimate__/total)*100000) %>%
   mutate(l95 = (lower__/total)*100000) %>%
   mutate(u95 = (upper__/total)*100000) %>%
-  select(rate, l95,u95, value=log_popdens) %>% 
+  dplyr::select(rate, l95,u95, value=log_popdens) %>% 
   mutate(type="All TB") %>%
   mutate(param = "Log population density")
 
@@ -1259,7 +1174,7 @@ p3 <- p3 %>%
   mutate(rate=(estimate__/total)*100000) %>%
   mutate(l95 = (lower__/total)*100000) %>%
   mutate(u95 = (upper__/total)*100000) %>%
-  select(rate, l95,u95, value=log_clinic_distance) %>% 
+  dplyr::select(rate, l95,u95, value=log_clinic_distance) %>% 
   mutate(type="All TB") %>%
   mutate(param = "Log clinic distance")
 
@@ -1268,7 +1183,7 @@ p4 <- p4 %>%
   mutate(rate=(estimate__/total)*100000) %>%
   mutate(l95 = (lower__/total)*100000) %>%
   mutate(u95 = (upper__/total)*100000) %>%
-  select(rate, l95,u95, value=mwi11povcons200) %>% 
+  dplyr::select(rate, l95,u95, value=mwi11povcons200) %>% 
   mutate(type="All TB") %>%
   mutate(param = "Percentage living in poverty")
 
@@ -1277,7 +1192,7 @@ p5 <- p5 %>%
   mutate(rate=(estimate__/total)*100000) %>%
   mutate(l95 = (lower__/total)*100000) %>%
   mutate(u95 = (upper__/total)*100000) %>%
-  select(rate, l95,u95, value=m_f_adult_ratio) %>% 
+  dplyr::select(rate, l95,u95, value=m_f_adult_ratio) %>% 
   mutate(type="All TB") %>%
   mutate(param = "M:F adult ratio")
 
@@ -1286,7 +1201,7 @@ p6 <- p6 %>%
   mutate(rate=(estimate__/total)*100000) %>%
   mutate(l95 = (lower__/total)*100000) %>%
   mutate(u95 = (upper__/total)*100000) %>%
-  select(rate, l95,u95, value=prop_adults) %>% 
+  dplyr::select(rate, l95,u95, value=prop_adults) %>% 
   mutate(type="All TB") %>%
   mutate(param = "Percentage adults")
 
@@ -1295,7 +1210,7 @@ p7 <- p7 %>%
   mutate(rate=(estimate__/total)*100000) %>%
   mutate(l95 = (lower__/total)*100000) %>%
   mutate(u95 = (upper__/total)*100000) %>%
-  select(rate, l95,u95, value=smr_ratio) %>% 
+  dplyr::select(rate, l95,u95, value=smr_ratio) %>% 
   mutate(type="All TB") %>%
   mutate(param = "Smear positive:negative ratio")
 
@@ -1304,7 +1219,7 @@ p8 <- p8 %>%
   mutate(rate=(estimate__/total)*100000) %>%
   mutate(l95 = (lower__/total)*100000) %>%
   mutate(u95 = (upper__/total)*100000) %>%
-  select(rate, l95,u95, value=mean_people_per_hh) %>% 
+  dplyr::select(rate, l95,u95, value=mean_people_per_hh) %>% 
   mutate(type="Microbiologically-confirmed TB") %>%
   mutate(param = "Mean people per household")
 
@@ -1313,7 +1228,7 @@ p9 <- p9 %>%
   mutate(rate=(estimate__/total)*100000) %>%
   mutate(l95 = (lower__/total)*100000) %>%
   mutate(u95 = (upper__/total)*100000) %>%
-  select(rate, l95,u95, value=log_popdens) %>% 
+  dplyr::select(rate, l95,u95, value=log_popdens) %>% 
   mutate(type="Microbiologically-confirmed TB") %>%
   mutate(param = "Log population density")
 
@@ -1322,7 +1237,7 @@ p10 <- p10 %>%
   mutate(rate=(estimate__/total)*100000) %>%
   mutate(l95 = (lower__/total)*100000) %>%
   mutate(u95 = (upper__/total)*100000) %>%
-  select(rate, l95,u95, value=log_clinic_distance) %>% 
+  dplyr::select(rate, l95,u95, value=log_clinic_distance) %>% 
   mutate(type="Microbiologically-confirmed TB") %>%
   mutate(param = "Log clinic distance")
 
@@ -1331,7 +1246,7 @@ p11 <- p11 %>%
   mutate(rate=(estimate__/total)*100000) %>%
   mutate(l95 = (lower__/total)*100000) %>%
   mutate(u95 = (upper__/total)*100000) %>%
-  select(rate, l95,u95, value=mwi11povcons200) %>% 
+  dplyr::select(rate, l95,u95, value=mwi11povcons200) %>% 
   mutate(type="Microbiologically-confirmed TB") %>%
   mutate(param = "Percentage living in poverty")
 
@@ -1340,7 +1255,7 @@ p12 <- p12 %>%
   mutate(rate=(estimate__/total)*100000) %>%
   mutate(l95 = (lower__/total)*100000) %>%
   mutate(u95 = (upper__/total)*100000) %>%
-  select(rate, l95,u95, value=m_f_adult_ratio) %>%
+  dplyr::select(rate, l95,u95, value=m_f_adult_ratio) %>%
   mutate(type="Microbiologically-confirmed TB") %>%
   mutate(param = "M:F adult ratio")
 
@@ -1349,7 +1264,7 @@ p13 <- p13 %>%
   mutate(rate=(estimate__/total)*100000) %>%
   mutate(l95 = (lower__/total)*100000) %>%
   mutate(u95 = (upper__/total)*100000) %>%
-  select(rate, l95,u95, value=prop_adults) %>%
+  dplyr::select(rate, l95,u95, value=prop_adults) %>%
   mutate(type="Microbiologically-confirmed TB") %>%
   mutate(param = "Percentage adults")
 
@@ -1358,7 +1273,7 @@ p14 <- p14 %>%
   mutate(rate=(estimate__/total)*100000) %>%
   mutate(l95 = (lower__/total)*100000) %>%
   mutate(u95 = (upper__/total)*100000) %>%
-  select(rate, l95,u95, value=smr_ratio) %>%
+  dplyr::select(rate, l95,u95, value=smr_ratio) %>%
   mutate(type="Microbiologically-confirmed TB") %>%
   mutate(param = "Smear positive:negative ratio")
 
@@ -1376,15 +1291,15 @@ ggplot(pz) +
   theme_minimal() +
   theme(legend.position="none")
 
-ggsave(file="Figure3.pdf", 
+ggsave(file="Figure3.pdf", width=8, height=8, dpi=300, 
        path = here("figures"))
 
 ```
 
 
+<br>
 
-
-##19. Supplemental Figure 3: Predicted and observed TB case notifications
+##18. Supplemental Figure 3: Predicted and observed TB case notifications
 
 ```{r}
 plot_grid(residual1, residual2,

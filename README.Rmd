@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 ```
-# BlantyreTBEpi
+## BlantyreTBEpi
 
 This package contains data and code to replicate the analysis of the manuscript:
 
@@ -76,11 +76,11 @@ Individual-level dataset including records of all 4009 TB cases registered for t
  - `sex`: Sex of TB case (male or female)
  - `tbclass`: Type of TB (pulmonary TB, or extrapulmonary TB)
  - `hivstatus`: HIV status of TB case (HIV-positive, HIV-negative, or unknown)
- - `smearstatus`: Sputum smear status of TB case, done by routine health system (positive, negative, or missing [not done])
+ - `smearstatus`: Sputum smear status of TB case, done by routine health system (positive, negative, or missing/not done)
  - `age`: Age (in years) of TB case on date of registration for treatment
- - `lab_smear`: sputum-smear status of TB case done at research laboratory on enhanced surveillance specimen
- - `lab_xpert`: GeneXpert MTB/Rif status of TB case done at research laboratory on enhanced surveillance specimen
- - `lab_culture`: MGIT culture status of TB case done at research laboratory on enhanced surveillance specimen
+ - `lab_smear`: sputum-smear status of TB case done at research laboratory on enhanced surveillance specimen (positive, scanty positive, negative, or not done/lab issue)
+ - `lab_xpert`: GeneXpert MTB/Rif status of TB case done at research laboratory on enhanced surveillance specimen (positive, negative, or not done/lab issue)
+ - `lab_culture`: MGIT culture status of TB case done at research laboratory on enhanced surveillance specimen (culture positive, culture negative, or not done/lab issue)
  - `lab_id`: Speciation of MGIT culture done at research laboratory on enhanced surveillance specimen
  - `any_micro_confirm`: Derived variable: microbiologically-confirmed status of TB case (on the basis of enhanced surveillance samples analysed at the research laboratory)
  - `c02hsaid`: Unique identifer of community health worker catchment area of residence
@@ -122,6 +122,7 @@ Data on population denominators and annual TB case notification rates for each o
  - `prop_adults`: Percentage (0-100%) of residents who were aged 15 years or older
  - `year`: Calendar year in which TB cases were registered
  - `n` Number of TB cases registered per year in each community health worker catchment area
+- `n_smearpositive`: Number of sputum-smear positive TB cases registered per year in each community health worker catchment area
  - `n_confirmed`: Number of microbiologically-confirmed TB cases registered per year in each community health worker catchment area
  - `cnr`: All TB case notification rate (per 100,000 residents per year)
  - `micro_cnr`: Microbiologically-confirmed TB case notification rate (per 100,000 residents per year)
@@ -132,7 +133,7 @@ Data on population denominators and annual TB case notification rates for each o
  
 ### `dat.rda`
 
-Data on population denominators and total TB case notification rates over entire study period (2015-2017) for each of the 315 community health worker catchment areas.
+Data on population denominators and TB case notification rates over entire study period (2015-2017) for each of the 315 community health worker catchment areas.
 
  - `c02hsaid`: Unique identifier for community health worker catchment area
  - `total`: Total number of community health worker catchment area residents ennumerated during census
