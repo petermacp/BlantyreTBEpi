@@ -1,0 +1,1399 @@
+---
+title: "Disparities in access to diagnosis and care in Blantyre, Malawi identified through enhanced citywide tuberculosis surveillance and spatial analysis"
+
+subtitle: "Spatial analysis"
+
+author: |
+  | Peter MacPherson
+  |
+  | Liverpool School of Tropical Medicine, Liverpool, UK
+  | Malawi-Liverpool-Wellcome Clinical Research Programme, Blantyre, Malawi
+  |
+
+date: | 
+  | `r format(Sys.time(), "%B %d, %Y")`
+  |
+  | Table of Contents:
+output: 
+  html_document:
+    theme: cosmo
+    highlight: espresso
+    toc: true
+---
+
+##1. Set-up
+
+Load all the required libraries.
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(sf)
+library(ggthemes)
+library(viridis)
+library(scales)
+library(lubridate)
+library(brms)
+library(arsenal)
+library(knitr)
+library(here)
+library(spdep)
+library(broom)
+library(RANN)
+library(forcats)
+library(cowplot)
+library(bayesplot)
+```
+
+<br>
+
+##2. Reproducibility
+
+This analysis was run on *`r Sys.time()`*, using the following system profile and package versions:
+
+```{r sysinfo, echo=TRUE, results='markup', message=FALSE, comment=NA, warning=FALSE}
+sessionInfo()
+```
+
+<br>
+
+##3. Map theme
+
+Create a base theme function for the maps.
+
+```{r,warning=FALSE}
+map_light <- function(...) {
+  theme_minimal() +
+  theme(
+    text = element_text(family = "Helvetica", color = "#22211d"),
+    axis.line = element_blank(),
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    panel.grid.major = element_line(color = "#ebebe5", size = 0.2),
+    panel.grid.minor = element_blank(),
+    plot.background = element_rect(fill = "white", color = NA), 
+    panel.background = element_rect(fill = "white", color = NA), 
+    legend.background = element_rect(fill = "white", color = NA),
+    panel.border = element_blank(),
+    ...
+  )
+}
+
+```
+
+<br>
+
+##4. Total population
+
+Describe summary characteristics of the population.
+
+```{r,warning=FALSE}
+data("dat", package="BlantyreTBEpi")
+
+dat %>%
+  st_set_geometry(., NULL) %>%
+  summarise(total=sum(total))
+
+dat %>%
+  st_set_geometry(., NULL) %>%
+  summarise(min=min(total))
+
+dat %>%
+  st_set_geometry(., NULL) %>%
+  summarise(min=max(total))
+
+dat %>%
+  st_set_geometry(., NULL) %>%
+  summarise(mean=mean(total),
+            sd= sd(total))
+
+dat %>%
+  st_set_geometry(., NULL) %>%
+  summarise(median=median(total),
+            i25=quantile(total, probs = 0.25),
+            i75=quantile(total, probs = 0.75))
+
+dat %>%
+  st_set_geometry(., NULL) %>%
+  summarise(min_m_f_adult_ratio = min(m_f_adult_ratio),
+            mean_m_f_adult_ratio = mean(m_f_adult_ratio),
+            max_m_f_adult_ratio = max(m_f_adult_ratio))
+
+dat %>%
+  st_set_geometry(., NULL) %>%
+  summarise(min_prop_adults = min(prop_adults),
+            mean_prop_adults = mean(prop_adults),
+            max_prop_adults = max(prop_adults))
+
+dat %>%
+  st_set_geometry(., NULL) %>%
+  summarise(min_pov = min(mwi11povcons200),
+            mean_pov = mean(mwi11povcons200),
+            max_pov = max(mwi11povcons200))
+
+
+```
+
+
+Plot the total population of Blantyre.
+
+```{r,warning=FALSE}
+data("dat", package="BlantyreTBEpi")
+data("clinics", package="BlantyreTBEpi")
+
+g1<- ggplot() +
+  geom_sf(data = dat, aes(fill = total)) +
+  geom_sf(data=clinics, shape=17, colour="#22211d") +
+  map_light() +
+  scale_fill_viridis(option = "magma", direction = -1,
+                     name ="Count",
+                     labels=comma) +
+  labs(x = NULL, 
+       y = NULL) +
+  theme(legend.text.align = 1)
+
+g1
+
+ggsave(file="Figure1.pdf", width=6, height=6, dpi=300, 
+       path = here("figures"))
+
+```
+
+<br>
+
+##5. Population density
+
+Plot the population density of Blantyre.
+
+
+```{r,warning=FALSE}
+g2 <- ggplot() +
+  geom_sf(data = dat, aes(fill = popdens)) +
+  geom_sf(data=clinics, shape=17, colour="#22211d") +
+  map_light() +
+  scale_fill_viridis(option = "magma", direction = -1,
+                     name = expression ("Population\nper\nsquare km"),
+                     labels=comma) +
+  labs(x = NULL, 
+       y = NULL) +
+  theme(legend.text.align = 1)
+
+g2
+
+ggsave(file="popdensity.pdf", width=6, height=6, dpi=300, 
+       path = here("figures"))
+
+```
+
+<br>
+
+##6. People per household
+
+Plot the mean people per household Blantyre.
+
+
+```{r,warning=FALSE}
+g3 <- ggplot() +
+  geom_sf(data = dat, aes(fill = mean_people_per_hh)) +
+  geom_sf(data=clinics, shape=17, colour="#22211d") +
+  map_light() +
+  scale_fill_viridis(option = "magma", direction = -1,
+                     name = expression ("Mean number\nof people\nper household"),
+                     labels=comma) +
+  labs(x = NULL, 
+       y = NULL) +
+  theme(legend.text.align = 1)
+
+g3
+
+ggsave(file="mean_hh_people.pdf", width=6, height=6, dpi=300, 
+       path = here("figures"))
+
+```
+
+<br>
+
+##7. Poverty distribution
+
+Plot the estimaed mean proportion of the population living on less than $2 per day. [Note this is estimated from Worldpop data]
+
+
+```{r,warning=FALSE}
+  
+g4 <- ggplot() +
+  geom_sf(data = dat, aes(fill = mwi11povcons200)) +
+  geom_sf(data=clinics, shape=17, colour="#22211d") +
+  map_light() +
+  scale_fill_viridis(option = "magma", direction = -1,
+                     name = expression ("Mean percentage\nof people\nliving on\nless than\nUS $2 per day"),
+                     labels=comma,
+                     limits = c(0,100)) +
+  labs(x = NULL, 
+       y = NULL) +
+  theme(legend.text.align = 1)
+
+g4
+
+ggsave(file="poverty.pdf", width=6, height=6, dpi=300, 
+       path = here("figures"))
+
+```
+
+<br>
+
+##8. Distance to nearest TB registration site
+
+```{r,warning=FALSE}
+data("dat", package="BlantyreTBEpi")
+
+g5 <- ggplot() +
+  geom_sf(data = dat, aes(fill = clinic_distance)) +
+  geom_sf(data=clinics, shape=17, colour="#22211d") +
+  map_light() +
+  scale_fill_viridis(option = "magma", direction = -1,
+                     name = expression ("Distance (m)\nto nearest\nTB registration\ncentre"),
+                     labels=comma,
+                     limits = c(0,10000)) +
+  labs(x = NULL, 
+       y = NULL) +
+  theme(legend.text.align = 1)
+
+g5
+
+ggsave(file="distance_to_clinic.pdf", width=6, height=6, dpi=300, 
+       path = here("figures"))
+
+```
+
+
+<br>
+
+##9. Male to female adult ratio
+
+
+```{r,warning=FALSE}
+g6 <- ggplot() +
+  geom_sf(data = dat, aes(fill = m_f_adult_ratio)) +
+  geom_sf(data=clinics, shape=17, colour="#22211d") +
+  map_light() +
+  scale_fill_viridis(option = "magma", direction = -1,
+                     name = expression ("Adult\nMale:Female\nratio"),
+                     labels=comma) +
+  labs(x = NULL, 
+       y = NULL) +
+  theme(legend.text.align = 1)
+
+g6
+
+ggsave(file="m_f_ratio.pdf", width=6, height=6, dpi=300, 
+       path = here("figures"))
+
+```
+
+<br>
+
+##10. Percentage of HSA cluster population who is adult
+
+
+```{r,warning=FALSE}
+g7 <- ggplot() +
+  geom_sf(data = dat, aes(fill = prop_adults)) +
+  geom_sf(data=clinics, shape=17, colour="#22211d") +
+  map_light() +
+  scale_fill_viridis(option = "magma", direction = -1,
+                     name = expression ("Percent\naged\n15 years\nor older"),
+                     labels=comma) +
+  labs(x = NULL, 
+       y = NULL) +
+  theme(legend.text.align = 1)
+
+g7
+
+ggsave(file="prop_adults.pdf", width=6, height=6, dpi=300, 
+       path = here("figures"))
+
+```
+
+<br>
+
+##11. Sputum smear positive to negative ratio.
+
+
+```{r}
+#Add in a term for ratio of smearpositive to smearnegative cases
+
+dat <- dat %>%
+  mutate(smr_ratio = n_smearpos_cases/(n_cases-n_smearpos_cases))
+
+dat$smr_ratio[is.nan(dat$smr_ratio)] <- 1
+dat$smr_ratio[is.infinite(dat$smr_ratio)] <- 1
+
+
+g8 <- ggplot() +
+  geom_sf(data = dat, aes(fill = smr_ratio)) +
+  geom_sf(data=clinics, shape=17, colour="#22211d") +
+  map_light() +
+  scale_fill_viridis(option = "magma", direction = -1,
+                     name = expression ("Smr +ve:-ve\nratio"),
+                     labels=comma) +
+  labs(x = NULL, 
+       y = NULL) +
+  theme(legend.text.align = 1)
+
+g8
+
+ggsave(file="smr_pos_neg.pdf", width=6, height=6, dpi=300, 
+       path = here("figures"))
+
+
+
+
+```
+
+<br>
+
+##12. Supplemental Figure 1
+
+Join all the descriptive figures together to produce one figure
+
+```{r,warning=FALSE}
+plot_grid(g1, g2, g3, g4, g5, g6, g7, g8,
+          labels = c("A", "B", "C", "D", "E", "F", "G", "H"),
+          label_fontfamily = "Helvetica")
+
+ggsave(file="S1_Fig.pdf", width=12, height=12, dpi=300, 
+       path = here("figures"))
+
+```
+
+
+##13. Correlation between variables.
+
+```{r}
+
+corrs <- dat %>%
+  st_set_geometry(., NULL) %>%
+  dplyr::select(total, mean_people_per_hh, popdens, m_f_adult_ratio,
+         prop_adults, mwi11povcons200, clinic_distance, smr_ratio)
+   
+
+pairs(corrs)
+
+```
+
+
+<br>
+
+##14. Table 1: Characteristics of TB cases
+
+Compare characteristics of cases located within and outside of HSA catchment areas.
+
+```{r,warning=FALSE, results="asis"}
+
+data("all_cases_sf", package="BlantyreTBEpi")
+
+all_cases_sf$year <- fct_drop(all_cases_sf$year)
+
+
+table1 <- tableby(resident ~ year + sex + age + tbclass + smearstatus + hivstatus +
+                    lab_smear + lab_culture + lab_id + any_micro_confirm, data = all_cases_sf)
+
+summary(table1)
+```
+
+
+<br>
+ 
+##16. Figure 2: TB case notification rates
+ 
+Plot overall TB case notification rates.
+
+```{r,warning=FALSE}
+
+data("cnrs", package="BlantyreTBEpi")
+
+cnr1 <- ggplot() +
+  geom_sf(data=dat) +
+  geom_sf(data=cnrs, aes(fill=cnr)) + 
+  geom_sf(data=clinics, shape=17, colour="#22211d") +
+  map_light() +
+  scale_fill_distiller(palette = "Spectral",
+                     name = "",
+                     labels=comma,
+                     limits = c(0,999)) +
+  labs(x = NULL, 
+       y = NULL) +
+  facet_grid(~year, drop = FALSE) +
+  theme(panel.background = element_rect(fill = "white", color = "#22211d" )) 
+
+cnr1
+
+ggsave(file="cnrs.pdf", width=12, height=6, dpi=300, 
+       path = here("figures"))
+
+```
+
+Now plot microbiologically-confirmed TB case notification rate
+
+```{r,warning=FALSE}
+
+data("cnrs", package="BlantyreTBEpi")
+
+cnr2 <- ggplot() +
+  geom_sf(data=dat) +
+  geom_sf(data=cnrs, aes(fill=micro_cnr)) + 
+  geom_sf(data=clinics, shape=17, colour="#22211d") +
+  map_light() +
+  scale_fill_distiller(palette = "Spectral",
+                     name = "",
+                     labels=comma,
+                     limits = c(0,500)) +
+  labs(x = NULL, 
+       y = NULL) +
+  facet_grid(~year, drop = FALSE) +
+  theme(panel.background = element_rect(fill = "white", color = "#22211d" ))
+
+cnr2
+
+ggsave(file="micro_cnrs.pdf", width=12, height=6, dpi=300, 
+       path = here("figures"))
+
+```
+
+```{r,warning=FALSE}
+plot_grid(cnr1, cnr2, labels = c("A", "B"), ncol = 1,
+          label_fontfamily = "Helvetica")
+
+ggsave(file="Figure2.pdf", width=10, height=8, dpi=300, 
+       path = here("figures"))
+
+
+```
+
+
+
+##17.Spatial modelling
+
+Make the spatial correlation matrices.
+
+```{r, warning=FALSE}
+#Make the adjacency matrix
+#First find the centroids
+centroids_sf <- st_centroid(st_geometry(dat), of_largest_polygon=TRUE)
+zm <- class(st_geometry(centroids_sf)[[1]])[1]
+if (zm %in% c("XYM", "XYZM"))
+  centroids_sf <- st_zm(centroids_sf, drop=TRUE, what="ZM")
+if (zm %in% c("XYZ"))
+  centroids_sf <- st_zm(centroids_sf, drop=TRUE, what="ZM")
+
+coords_sf <- st_coordinates(centroids_sf)
+
+neigh1 <- knn2nb(knearneigh(coords_sf, k=1))
+neigh2 <- knn2nb(knearneigh(coords_sf, k=2))
+neigh3 <- knn2nb(knearneigh(coords_sf, k=3))
+neigh4 <- knn2nb(knearneigh(coords_sf, k=4))
+neigh5 <- knn2nb(knearneigh(coords_sf, k=5))
+neigh6 <- knn2nb(knearneigh(coords_sf, k=6))
+
+
+path <- paste(here("figures"), "S2_fig.pdf", sep="/")
+pdf(path)
+
+par(mfrow=c(2,3), mar=c(1,1,1,1))
+plot.nb(neigh1, coords_sf, col="#036564", points=FALSE)
+title(main="k=1", cex=2)
+plot.nb(neigh2, coords_sf, col="#036564", points=FALSE)
+title(main="k=2", cex=2)
+plot.nb(neigh3, coords_sf, col="#036564", points=FALSE)
+title(main="k=3", cex=2)
+plot.nb(neigh4, coords_sf, col="#036564", points=FALSE)
+title(main="k=4", cex=2)
+plot.nb(neigh5, coords_sf, col="#036564", points=FALSE)
+title(main="k=5", cex=2)
+plot.nb(neigh6, coords_sf, col="#036564", points=FALSE)
+title(main="k=6", cex=2)
+
+dev.off()
+
+dat$hsa_area <- factor (1:nrow (dat))
+
+#Create the neighbourhood matrices for each model
+w1 <- nb2mat(make.sym.nb(neigh1), style="B")
+rownames(w1) <- as.character (1:nrow (dat))
+
+w2 <- nb2mat(make.sym.nb(neigh2), style="B")
+rownames(w2) <- as.character (1:nrow (dat))
+
+w3 <- nb2mat(make.sym.nb(neigh3), style="B")
+rownames(w3) <- as.character (1:nrow (dat))
+
+w4 <- nb2mat(make.sym.nb(neigh4), style="B")
+rownames(w4) <- as.character (1:nrow (dat))
+
+w5 <- nb2mat(make.sym.nb(neigh5), style="B")
+rownames(w5) <- as.character (1:nrow (dat))
+
+w6 <- nb2mat(make.sym.nb(neigh6), style="B")
+rownames(w6) <- as.character (1:nrow (dat))
+
+
+
+```
+
+Take logarithm of some values
+
+```{r}
+
+dat <- dat %>%
+  mutate(log_total = log(total))
+
+dat <- dat %>%
+  mutate(log_popdens = log(popdens))
+
+dat <- dat %>%
+  mutate(log_clinic_distance = log(clinic_distance))
+
+
+```
+
+
+Run all of the models, varying spatial autocorration prior
+
+
+```{r}
+
+prior <- c(prior_string("normal(0,10)", class="b"),
+           prior_(~normal(0,10), class= ~Intercept))
+
+all_0 <- brm(bf(n_cases ~
+          mean_people_per_hh +
+          log_popdens +
+          log_clinic_distance +
+          mwi11povcons200 +
+          m_f_adult_ratio +
+          prop_adults +
+          smr_ratio +
+          offset(log_total)),
+          data=dat, 
+          family='poisson',
+          prior = prior,
+          iter=4000, warmup=1000,
+          chains=3,
+          seed=1234,
+          control=list(adapt_delta=0.95))
+
+all_1 <- brm(bf(n_cases ~
+          mean_people_per_hh +
+          log_popdens +
+          log_clinic_distance +
+          mwi11povcons200 +
+          m_f_adult_ratio +
+          prop_adults +
+          smr_ratio +
+          offset(log_total)),
+          data=dat, 
+          family='poisson',
+          prior = prior,
+          autocor=cor_car(w2, ~ 1 | c02hsaid1),
+          iter=4000, warmup=1000,
+          chains=3,
+          seed=1234,
+          control=list(adapt_delta=0.95))
+
+all_2 <- brm(bf(n_cases ~
+          mean_people_per_hh +
+          log_popdens +
+          log_clinic_distance +
+          mwi11povcons200 +
+          m_f_adult_ratio +
+          prop_adults +
+          smr_ratio +
+          offset(log_total)),
+          data=dat, 
+          family='poisson',
+          prior = prior,
+          autocor=cor_car(w2, ~ 1 | c02hsaid1),
+          iter=4000, warmup=1000,
+          chains=3,
+          seed=1234,
+          control=list(adapt_delta=0.95))
+
+
+all_3 <- brm(bf(n_cases ~
+          mean_people_per_hh +
+          log_popdens +
+          log_clinic_distance +
+          mwi11povcons200 +
+          m_f_adult_ratio +
+          prop_adults +
+          smr_ratio +
+          offset(log_total)),
+          data=dat, 
+          family='poisson',
+          prior = prior,
+          autocor=cor_car(w3, ~ 1 | c02hsaid1),
+          iter=4000, warmup=1000,
+          chains=3,
+          seed=1234,
+          control=list(adapt_delta=0.95))
+
+all_4 <- brm(bf(n_cases ~
+          mean_people_per_hh +
+          log_popdens +
+          log_clinic_distance +
+          mwi11povcons200 +
+          m_f_adult_ratio +
+          prop_adults +
+          smr_ratio +
+          offset(log_total)),
+          data=dat, 
+          family='poisson',
+          prior = prior,
+          autocor=cor_car(w4, ~ 1 | c02hsaid1),
+          iter=4000, warmup=1000,
+          chains=3,
+          seed=1234,
+          control=list(adapt_delta=0.95))
+
+all_5 <- brm(bf(n_cases ~
+          mean_people_per_hh +
+          log_popdens +
+          log_clinic_distance +
+          mwi11povcons200 +
+          m_f_adult_ratio +
+          prop_adults +
+          smr_ratio +
+          offset(log_total)),
+          data=dat, 
+          family='poisson',
+          prior = prior,
+          autocor=cor_car(w5, ~ 1 | c02hsaid1),
+          iter=4000, warmup=1000,
+          chains=3,
+          seed=1234,
+          control=list(adapt_delta=0.95))
+
+all_6 <- brm(bf(n_cases ~
+          mean_people_per_hh +
+          log_popdens +
+          log_clinic_distance +
+          mwi11povcons200 +
+          m_f_adult_ratio +
+          prop_adults +
+          smr_ratio +
+          offset(log_total)),
+          data=dat, 
+          family='poisson',
+          prior = prior,
+          autocor=cor_car(w6, ~ 1 | c02hsaid1),
+          iter=4000, warmup=1000,
+          chains=3,
+          seed=1234,
+          control=list(adapt_delta=0.95))
+
+all_0_ic <- waic(all_0)
+all_1_ic <- waic(all_1)
+all_2_ic <- waic(all_2)
+all_3_ic <- waic(all_3)
+all_4_ic <- waic(all_4)
+all_5_ic <- waic(all_5)
+all_6_ic <- waic(all_6)
+
+compare_ic(all_0_ic, all_1_ic, all_2_ic, all_3_ic, all_4_ic, all_5_ic, all_6_ic)
+
+waics0 <- as.tibble(unlist(all_0_ic)) %>% rownames_to_column() %>% filter(rowname == "waic") %>%
+  mutate(model="k0") %>%
+  dplyr::select(model, value)
+
+waics1 <- as.tibble(unlist(all_1_ic)) %>% rownames_to_column() %>% filter(rowname == "waic") %>%
+  mutate(model="k1") %>%
+  dplyr::select(model, value)
+
+waics2 <- as.tibble(unlist(all_2_ic)) %>% rownames_to_column() %>% filter(rowname == "waic") %>%
+  mutate(model="k2") %>%
+  dplyr::select(model, value)
+
+waics3 <- as.tibble(unlist(all_3_ic)) %>% rownames_to_column() %>% filter(rowname == "waic") %>%
+  mutate(model="k3") %>%
+  dplyr::select(model, value)
+
+waics4 <- as.tibble(unlist(all_4_ic)) %>% rownames_to_column() %>% filter(rowname == "waic") %>%
+  mutate(model="k4") %>%
+  dplyr::select(model, value)
+
+waics5 <- as.tibble(unlist(all_5_ic)) %>% rownames_to_column() %>% filter(rowname == "waic") %>%
+  mutate(model="k5") %>%
+  dplyr::select(model, value)
+
+waics6 <- as.tibble(unlist(all_6_ic)) %>% rownames_to_column() %>% filter(rowname == "waic") %>%
+  mutate(model="k6") %>%
+  dplyr::select(model, value)
+
+waics <- bind_rows(waics0, waics1, waics2, waics3, waics4, waics5, waics6)
+waics <- waics %>% mutate(value = as.numeric(value)) %>% mutate(value = round(value, digits=2))
+
+ests_all_0<- tidy(exp(fixef(all_0)))
+ests_all_0 <- ests_all_0 %>%
+  mutate(model="k0")
+
+ests_all_1<- tidy(exp(fixef(all_1)))
+ests_all_1 <- ests_all_1 %>%
+  mutate(model="k1")
+
+ests_all_2<- tidy(exp(fixef(all_2)))
+ests_all_2 <- ests_all_2 %>%
+  mutate(model="k2")
+
+ests_all_3<- tidy(exp(fixef(all_3)))
+ests_all_3 <- ests_all_3 %>%
+  mutate(model="k3")
+
+ests_all_4<- tidy(exp(fixef(all_4)))
+ests_all_4 <- ests_all_4 %>%
+  mutate(model="k4")
+
+ests_all_5<- tidy(exp(fixef(all_5)))
+ests_all_5 <- ests_all_5 %>%
+  mutate(model="k5")
+
+ests_all_6<- tidy(exp(fixef(all_6)))
+ests_all_6 <- ests_all_6 %>%
+  mutate(model="k6")
+
+all_all <- bind_rows(ests_all_0, ests_all_1, ests_all_2, ests_all_3, ests_all_4, ests_all_5, ests_all_6)
+
+all_all <- left_join(all_all, waics)
+
+all_all <- all_all %>% mutate(value = as.numeric(value)) %>% mutate(value = round(value, digits=2))
+
+s3a <- all_all %>%
+  filter(`.rownames` != "Intercept") %>%
+  ggplot() +
+  geom_pointrange(aes(x=.rownames, y=Estimate, ymin=Q2.5, ymax=Q97.5, group=fct_rev(model), colour=model),
+                  position=position_dodge(width=1)) +
+  coord_flip() +
+  geom_hline(yintercept = 1, linetype="dashed") +
+  ylab("") +
+  xlab("") +
+  scale_x_discrete(labels = c("Log(10) distance to clinic",
+                              "Log(10) population density",
+                              "M:F adult ratio",
+                              "Mean people per household",
+                              "Percentage living in poverty",
+                              "Percentage adults",
+                              "Smear pos:smear neg ratio")) +
+  scale_color_economist(name = "Model: WAIC", labels = paste(levels(as.factor(all_all$model)), waics$value, sep=": ")) +
+  scale_y_sqrt(breaks=c(0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6), limits=c(0,1.6)) +
+  theme_bw() +
+  theme(text =  element_text(size=14))
+
+ggsave(file="s3a_fig.pdf", height = 10, width = 10, dpi=300, 
+       path = here("figures"))
+
+
+```
+
+
+
+```{r}
+
+prior <- c(prior_string("normal(0,10)", class="b"),
+           prior_(~normal(0,10), class= ~Intercept))
+
+micro_0 <- brm(bf(n_micro_cases ~
+          mean_people_per_hh +
+          log_popdens +
+          log_clinic_distance +
+          mwi11povcons200 +
+          m_f_adult_ratio +
+          prop_adults +
+          smr_ratio +
+          offset(log_total)),
+          data=dat, 
+          family='poisson',
+          prior = prior,
+          iter=4000, warmup=1000,
+          chains=3,
+          seed=1234,
+          control=list(adapt_delta=0.95))
+
+micro_1 <- brm(bf(n_micro_cases ~
+          mean_people_per_hh +
+          log_popdens +
+          log_clinic_distance +
+          mwi11povcons200 +
+          m_f_adult_ratio +
+          prop_adults +
+          smr_ratio +
+          offset(log_total)),
+          data=dat, 
+          family='poisson',
+          prior = prior,
+          autocor=cor_car(w2, ~ 1 | c02hsaid1),
+          iter=4000, warmup=1000,
+          chains=3,
+          seed=1234,
+          control=list(adapt_delta=0.95))
+
+micro_2 <- brm(bf(n_micro_cases ~
+          mean_people_per_hh +
+          log_popdens +
+          log_clinic_distance +
+          mwi11povcons200 +
+          m_f_adult_ratio +
+          prop_adults +
+          smr_ratio +
+          offset(log_total)),
+          data=dat, 
+          family='poisson',
+          prior = prior,
+          autocor=cor_car(w2, ~ 1 | c02hsaid1),
+          iter=4000, warmup=1000,
+          chains=3,
+          seed=1234,
+          control=list(adapt_delta=0.95))
+
+
+micro_3 <- brm(bf(n_micro_cases ~
+          mean_people_per_hh +
+          log_popdens +
+          log_clinic_distance +
+          mwi11povcons200 +
+          m_f_adult_ratio +
+          prop_adults +
+          smr_ratio +
+          offset(log_total)),
+          data=dat, 
+          family='poisson',
+          prior = prior,
+          autocor=cor_car(w3, ~ 1 | c02hsaid1),
+          iter=4000, warmup=1000,
+          chains=3,
+          seed=1234,
+          control=list(adapt_delta=0.95))
+
+micro_4 <- brm(bf(n_micro_cases ~
+          mean_people_per_hh +
+          log_popdens +
+          log_clinic_distance +
+          mwi11povcons200 +
+          m_f_adult_ratio +
+          prop_adults +
+          smr_ratio +
+          offset(log_total)),
+          data=dat, 
+          family='poisson',
+          prior = prior,
+          autocor=cor_car(w4, ~ 1 | c02hsaid1),
+          iter=4000, warmup=1000,
+          chains=3,
+          seed=1234,
+          control=list(adapt_delta=0.95))
+
+micro_5 <- brm(bf(n_micro_cases ~
+          mean_people_per_hh +
+          log_popdens +
+          log_clinic_distance +
+          mwi11povcons200 +
+          m_f_adult_ratio +
+          prop_adults +
+          smr_ratio +
+          offset(log_total)),
+          data=dat, 
+          family='poisson',
+          prior = prior,
+          autocor=cor_car(w5, ~ 1 | c02hsaid1),
+          iter=4000, warmup=1000,
+          chains=3,
+          seed=1234,
+          control=list(adapt_delta=0.95))
+
+micro_6 <- brm(bf(n_micro_cases ~
+          mean_people_per_hh +
+          log_popdens +
+          log_clinic_distance +
+          mwi11povcons200 +
+          m_f_adult_ratio +
+          prop_adults +
+          smr_ratio +
+          offset(log_total)),
+          data=dat, 
+          family='poisson',
+          prior = prior,
+          autocor=cor_car(w6, ~ 1 | c02hsaid1),
+          iter=4000, warmup=1000,
+          chains=3,
+          seed=1234,
+          control=list(adapt_delta=0.95))
+
+micro_0_ic <- waic(micro_0)
+micro_1_ic <- waic(micro_1)
+micro_2_ic <- waic(micro_2)
+micro_3_ic <- waic(micro_3)
+micro_4_ic <- waic(micro_4)
+micro_5_ic <- waic(micro_5)
+micro_6_ic <- waic(micro_6)
+
+compare_ic(micro_0_ic, micro_1_ic, micro_2_ic, micro_3_ic, micro_4_ic, micro_5_ic, micro_6_ic)
+
+waics_micro_0 <- as.tibble(unlist(micro_0_ic)) %>% rownames_to_column() %>% filter(rowname == "waic") %>%
+  mutate(model="k0") %>%
+  dplyr::select(model, value)
+
+waics_micro_1 <- as.tibble(unlist(micro_1_ic)) %>% rownames_to_column() %>% filter(rowname == "waic") %>%
+  mutate(model="k1") %>%
+  dplyr::select(model, value)
+
+waics_micro_2 <- as.tibble(unlist(micro_2_ic)) %>% rownames_to_column() %>% filter(rowname == "waic") %>%
+  mutate(model="k2") %>%
+  dplyr::select(model, value)
+
+waics_micro_3 <- as.tibble(unlist(micro_3_ic)) %>% rownames_to_column() %>% filter(rowname == "waic") %>%
+  mutate(model="k3") %>%
+  dplyr::select(model, value)
+
+waics_micro_4 <- as.tibble(unlist(micro_4_ic)) %>% rownames_to_column() %>% filter(rowname == "waic") %>%
+  mutate(model="k4") %>%
+  dplyr::select(model, value)
+
+waics_micro_5 <- as.tibble(unlist(micro_5_ic)) %>% rownames_to_column() %>% filter(rowname == "waic") %>%
+  mutate(model="k5") %>%
+  dplyr::select(model, value)
+
+waics_micro_6 <- as.tibble(unlist(micro_6_ic)) %>% rownames_to_column() %>% filter(rowname == "waic") %>%
+  mutate(model="k6") %>%
+  dplyr::select(model, value)
+
+waics_micro <- bind_rows(waics_micro_0, waics_micro_1, waics_micro_2, waics_micro_3, waics_micro_4, waics_micro_5, waics_micro_6)
+
+waics_micro <- waics_micro %>% mutate(value = as.numeric(value)) %>% mutate(value = round(value, digits=2))
+
+
+ests_micro_0<- tidy(exp(fixef(micro_0)))
+ests_micro_0 <- ests_micro_0 %>%
+  mutate(model="k0")
+
+ests_micro_1<- tidy(exp(fixef(micro_1)))
+ests_micro_1 <- ests_micro_1 %>%
+  mutate(model="k1")
+
+ests_micro_2<- tidy(exp(fixef(micro_2)))
+ests_micro_2 <- ests_micro_2 %>%
+  mutate(model="k2")
+
+ests_micro_3<- tidy(exp(fixef(micro_3)))
+ests_micro_3 <- ests_micro_3 %>%
+  mutate(model="k3")
+
+ests_micro_4<- tidy(exp(fixef(micro_4)))
+ests_micro_4 <- ests_micro_4 %>%
+  mutate(model="k4")
+
+ests_micro_5<- tidy(exp(fixef(micro_5)))
+ests_micro_5 <- ests_micro_5 %>%
+  mutate(model="k5")
+
+ests_micro_6<- tidy(exp(fixef(micro_6)))
+ests_micro_6 <- ests_micro_6 %>%
+  mutate(model="k6")
+
+micro_micro <- bind_rows(ests_micro_0, ests_micro_1, ests_micro_2, ests_micro_3, ests_micro_4, ests_micro_5, ests_micro_6)
+
+micro_micro <- left_join(micro_micro, waics_micro)
+
+micro_micro <- micro_micro %>% mutate(value = as.numeric(value))
+
+s3b <- micro_micro %>%
+  filter(`.rownames` != "Intercept") %>%
+  ggplot() +
+  geom_pointrange(aes(x=.rownames, y=Estimate, ymin=Q2.5, ymax=Q97.5, group=fct_rev(model), colour=model),
+                  position=position_dodge(width=1)) +
+  coord_flip() +
+  geom_hline(yintercept = 1, linetype="dashed") +
+  ylab("") +
+  xlab("") +
+  scale_x_discrete(labels = c("Log(10) distance to clinic",
+                              "Log(10) population density",
+                              "M:F adult ratio",
+                              "Mean people per household",
+                              "Percentage living in poverty",
+                              "Percentage adults",
+                              "Smear pos:smear neg ratio")) +
+  scale_color_economist(name = "Model: WAIC", labels = paste(levels(as.factor(all_all$mode)), sprintf("%.2f", waics_micro$value), sep=": ")) +
+  scale_y_sqrt(breaks=c(0.2,0.4,0.6,0.8,1.0,1.2,1.4,1.6), limits=c(0,1.6)) +
+  theme_bw() +
+  theme(text =  element_text(size=14))
+
+ggsave(file="s3b_fig.pdf", width = 10, height = 10, dpi=300, 
+       path = here("figures"))
+
+
+```
+
+
+```{r}
+
+plot_grid(s3a, s3b,
+          labels = c("A", "B"), ncol = 1,
+          label_fontfamily = "Helvetica")
+
+ggsave(file="S3_fig.pdf", width=10, height=12, dpi=300, 
+       path = here("figures"))
+
+
+``` 
+
+
+
+
+
+
+All TB cases final model
+
+Select model with lowest WAIC (i.e. k6)
+
+```{r}
+
+#Overall model summary
+summary(all_6)
+
+#Model diagnostics
+plot(all_6, ask = FALSE)
+
+pp_all_6 <- as_tibble(predict(all_6))
+pp_all_6 <- dat %>%
+  dplyr::select(c02hsaid, n_cases) %>%
+  bind_cols(pp_all_6) %>%
+  mutate(diff=n_cases - Estimate) %>%
+  mutate(abdiff = abs(diff)) %>%
+  arrange(diff) %>%
+  mutate(c02hsaid = factor(c02hsaid))
+
+residual1 <- pp_all_6 %>%
+  ggplot() +
+  geom_linerange(aes(x=fct_reorder(c02hsaid, n_cases, .desc=TRUE), ymin=n_cases, ymax=Estimate), alpha=0.7) +
+  geom_point(aes(x=fct_reorder(c02hsaid, n_cases, .desc=TRUE), y=n_cases), colour="firebrick") +
+  geom_point(aes(x=fct_reorder(c02hsaid, n_cases, .desc=TRUE), alpha=abdiff, y=Estimate), colour="steelblue") +
+  theme_classic() +
+  labs(x="",
+       y="Observed (red) and predicted (blue) TB cases") +
+  theme(axis.ticks.x = element_blank(),
+        axis.text.x = element_blank()) +
+  theme(legend.position="none")
+
+ggsave(file="residual1.pdf", width=12, height=6, dpi=300, 
+       path = here("figures"))
+
+
+##Model estimates
+ests_all_6<- tidy(exp(fixef(all_6)))
+
+ests_all_6 %>%
+  kable()
+
+
+#Plot posterior distributions
+facet_names <- c(
+                    `b_log_popdens` = "Population density (per square km)",
+                    `b_mean_people_per_hh` = "Mean people per household",
+                    `b_log_clinic_distance` = "Distance to TB clinic",
+                    `b_mwi11povcons200` = "Percentage living in poverty",
+                    `b_m_f_adult_ratio` = "Male:female adult ratio",
+                    `b_prop_adults` = "Percentage adults",
+                    `b_smr_ratio` = "Smear pos:smear neg ratio")
+
+plotpars <- c("b_log_popdens", "b_mean_people_per_hh", "b_log_clinic_distance",
+              "b_mwi11povcons200", "b_m_f_adult_ratio", "b_prop_adults", 
+              "Smear pos:smear neg ratio")
+
+post_samples_all_6 <- posterior_samples(all_6, "b")
+plot_post_all_6 <- gather(post_samples_all_6, variable, value) %>%
+  filter(variable %in% plotpars)
+plot_post_all_6$variable <- factor(plot_post_all_6$variable)
+
+plot_post_all_6$variable <- fct_relevel(plot_post_all_6$variable,"b_Intercept")
+
+plot_post_all_6 %>% 
+  filter(variable %in% plotpars) %>%
+  ggplot(aes(value)) +
+  geom_density(fill="firebrick", colour="firebrick", alpha=0.5) +
+  facet_wrap(~variable, nrow = 2, labeller = as_labeller(facet_names)) +
+  geom_vline(xintercept = 0, linetype="dashed") +
+  theme_bw() +
+  xlim(-5,5) +
+  xlab("Estimated effect on TB case notification rate") +
+  ylab("") +
+  theme(axis.ticks.y = element_blank(),
+        axis.text.y = element_blank()) -> post_all_6
+
+post_all_6
+
+
+ggsave(file="posterior1.pdf", width=12, height=6, dpi=300, 
+       path = here("figures"))
+
+
+```
+
+
+
+Select model with lowest WAIC for microbiologically-confirmed TB (i.e. k4).
+
+```{r}
+
+#Overall model summary
+summary(micro_4)
+
+#Model diagnostics
+plot(micro_4, ask = FALSE)
+
+Resid.zip.brm <- residuals(micro_4, type='pearson')[,'Estimate']
+Fitted.zip.brm <- exp(fitted(micro_4, scale='linear')[1:nrow(dat),'Estimate'])
+ggplot(data=NULL, aes(y=Resid.zip.brm, x=Fitted.zip.brm)) + geom_point()
+
+pp_micro_4 <- as_tibble(predict(micro_4))
+pp_micro_4 <- dat %>%
+  dplyr::select(c02hsaid, n_micro_cases) %>%
+  bind_cols(pp_micro_4) %>%
+  mutate(diff=n_micro_cases - Estimate) %>%
+  mutate(abdiff = abs(diff)) %>%
+  arrange(diff) %>%
+  mutate(c02hsaid = factor(c02hsaid))
+
+residual2 <- pp_micro_4 %>%
+  ggplot() +
+  geom_point(aes(x=fct_reorder(c02hsaid, n_micro_cases, .desc=TRUE), y=n_micro_cases), colour="firebrick") +
+  geom_point(aes(x=fct_reorder(c02hsaid, n_micro_cases, .desc=TRUE), alpha=abdiff, y=Estimate), colour="steelblue") +
+  geom_linerange(aes(x=fct_reorder(c02hsaid, n_micro_cases, .desc=TRUE), ymin=n_micro_cases, ymax=Estimate), alpha=0.7) +
+  theme_classic() +
+  labs(x="",
+       y="Observed (red) and predicted (blue) TB cases") +
+  theme(axis.ticks.x = element_blank(),
+        axis.text.x = element_blank()) +
+  theme(legend.position="none")
+
+ggsave(file="residual2.pdf", width=12, height=6, dpi=300, 
+       path = here("figures"))
+
+
+##Model estimates
+ests_micro_4<- tidy(exp(fixef(micro_4)))
+
+ests_micro_4 %>%
+  kable()
+
+
+#Plot posterior distributions
+facet_names <- c(
+                    `b_log_popdens` = "Population density (per square km)",
+                    `b_mean_people_per_hh` = "Mean people per household",
+                    `b_log_clinic_distance` = "Distance to TB clinic",
+                    `b_mwi11povcons200` = "Percentage living in poverty",
+                    `b_m_f_adult_ratio` = "Male:female adult ratio",
+                    `b_prop_adults` = "Percentage adults",
+                    `b_smr_ratio` = "Smear pos:smear neg ratio")
+
+plotpars <- c("b_log_popdens", "b_mean_people_per_hh", "b_log_clinic_distance",
+              "b_mwi11povcons200", "b_m_f_adult_ratio", "b_prop_adults", "Smear pos:smear neg ratio")
+
+post_samples_micro_4 <- posterior_samples(micro_4, "b")
+plot_post_micro_4 <- gather(post_samples_micro_4, variable, value) %>%
+  filter(variable %in% plotpars)
+plot_post_micro_4$variable <- factor(plot_post_micro_4$variable)
+
+plot_post_micro_4$variable <- fct_relevel(plot_post_micro_4$variable,"b_Intercept")
+
+plot_post_micro_4 %>% 
+  filter(variable %in% plotpars) %>%
+  ggplot(aes(value)) +
+  geom_density(fill="firebrick", colour="firebrick", alpha=0.5) +
+  facet_wrap(~variable, nrow = 2, labeller = as_labeller(facet_names)) +
+  geom_vline(xintercept = 0, linetype="dashed") +
+  theme_bw() +
+  xlim(-5,5) +
+  xlab("Estimated effect on TB case notification rate per unit increase in variable") +
+  ylab("") +
+  theme(axis.ticks.y = element_blank(),
+        axis.text.y = element_blank()) -> post_micro_4
+
+post_micro_4
+
+
+ggsave(file="posterior2.pdf", width=12, height=6, dpi=300, 
+       path = here("figures"))
+
+
+```
+
+<br>
+
+## 18. Figure 3: Marginal Effects plot
+
+```{r}
+me <- marginal_effects(all_6, 
+                       conditions = data.frame(total = seq(1000,15000, 250)))
+me2 <- marginal_effects(micro_4, conditions = data.frame(total = seq(1000,15000, 250)))
+
+p1 <- me[[1]]
+p1 <- p1 %>%
+  mutate(rate=(estimate__/total)*100000) %>%
+  mutate(l95 = (lower__/total)*100000) %>%
+  mutate(u95 = (upper__/total)*100000) %>%
+  select(rate, l95,u95, value=mean_people_per_hh) %>% 
+  mutate(type="All TB") %>%
+  mutate(param = "Mean people per household") 
+
+p2 <- me[[2]]
+p2 <- p2 %>%
+  mutate(rate=(estimate__/total)*100000) %>%
+  mutate(l95 = (lower__/total)*100000) %>%
+  mutate(u95 = (upper__/total)*100000) %>%
+  select(rate, l95,u95, value=log_popdens) %>% 
+  mutate(type="All TB") %>%
+  mutate(param = "Log population density")
+
+p3 <- me[[3]]
+p3 <- p3 %>%
+  mutate(rate=(estimate__/total)*100000) %>%
+  mutate(l95 = (lower__/total)*100000) %>%
+  mutate(u95 = (upper__/total)*100000) %>%
+  select(rate, l95,u95, value=log_clinic_distance) %>% 
+  mutate(type="All TB") %>%
+  mutate(param = "Log clinic distance")
+
+p4 <- me[[4]]
+p4 <- p4 %>%
+  mutate(rate=(estimate__/total)*100000) %>%
+  mutate(l95 = (lower__/total)*100000) %>%
+  mutate(u95 = (upper__/total)*100000) %>%
+  select(rate, l95,u95, value=mwi11povcons200) %>% 
+  mutate(type="All TB") %>%
+  mutate(param = "Percentage living in poverty")
+
+p5 <- me[[5]]
+p5 <- p5 %>%
+  mutate(rate=(estimate__/total)*100000) %>%
+  mutate(l95 = (lower__/total)*100000) %>%
+  mutate(u95 = (upper__/total)*100000) %>%
+  select(rate, l95,u95, value=m_f_adult_ratio) %>% 
+  mutate(type="All TB") %>%
+  mutate(param = "M:F adult ratio")
+
+p6 <- me[[6]]
+p6 <- p6 %>%
+  mutate(rate=(estimate__/total)*100000) %>%
+  mutate(l95 = (lower__/total)*100000) %>%
+  mutate(u95 = (upper__/total)*100000) %>%
+  select(rate, l95,u95, value=prop_adults) %>% 
+  mutate(type="All TB") %>%
+  mutate(param = "Percentage adults")
+
+p7 <- me[[7]]
+p7 <- p7 %>%
+  mutate(rate=(estimate__/total)*100000) %>%
+  mutate(l95 = (lower__/total)*100000) %>%
+  mutate(u95 = (upper__/total)*100000) %>%
+  select(rate, l95,u95, value=smr_ratio) %>% 
+  mutate(type="All TB") %>%
+  mutate(param = "Smear positive:negative ratio")
+
+p8 <- me2[[1]]
+p8 <- p8 %>%
+  mutate(rate=(estimate__/total)*100000) %>%
+  mutate(l95 = (lower__/total)*100000) %>%
+  mutate(u95 = (upper__/total)*100000) %>%
+  select(rate, l95,u95, value=mean_people_per_hh) %>% 
+  mutate(type="Microbiologically-confirmed TB") %>%
+  mutate(param = "Mean people per household")
+
+p9 <- me2[[2]]
+p9 <- p9 %>%
+  mutate(rate=(estimate__/total)*100000) %>%
+  mutate(l95 = (lower__/total)*100000) %>%
+  mutate(u95 = (upper__/total)*100000) %>%
+  select(rate, l95,u95, value=log_popdens) %>% 
+  mutate(type="Microbiologically-confirmed TB") %>%
+  mutate(param = "Log population density")
+
+p10 <- me2[[3]]
+p10 <- p10 %>%
+  mutate(rate=(estimate__/total)*100000) %>%
+  mutate(l95 = (lower__/total)*100000) %>%
+  mutate(u95 = (upper__/total)*100000) %>%
+  select(rate, l95,u95, value=log_clinic_distance) %>% 
+  mutate(type="Microbiologically-confirmed TB") %>%
+  mutate(param = "Log clinic distance")
+
+p11 <- me2[[4]]
+p11 <- p11 %>%
+  mutate(rate=(estimate__/total)*100000) %>%
+  mutate(l95 = (lower__/total)*100000) %>%
+  mutate(u95 = (upper__/total)*100000) %>%
+  select(rate, l95,u95, value=mwi11povcons200) %>% 
+  mutate(type="Microbiologically-confirmed TB") %>%
+  mutate(param = "Percentage living in poverty")
+
+p12 <- me2[[5]]
+p12 <- p12 %>%
+  mutate(rate=(estimate__/total)*100000) %>%
+  mutate(l95 = (lower__/total)*100000) %>%
+  mutate(u95 = (upper__/total)*100000) %>%
+  select(rate, l95,u95, value=m_f_adult_ratio) %>%
+  mutate(type="Microbiologically-confirmed TB") %>%
+  mutate(param = "M:F adult ratio")
+
+p13 <- me2[[6]]
+p13 <- p13 %>%
+  mutate(rate=(estimate__/total)*100000) %>%
+  mutate(l95 = (lower__/total)*100000) %>%
+  mutate(u95 = (upper__/total)*100000) %>%
+  select(rate, l95,u95, value=prop_adults) %>%
+  mutate(type="Microbiologically-confirmed TB") %>%
+  mutate(param = "Percentage adults")
+
+p14 <- me2[[7]]
+p14 <- p14 %>%
+  mutate(rate=(estimate__/total)*100000) %>%
+  mutate(l95 = (lower__/total)*100000) %>%
+  mutate(u95 = (upper__/total)*100000) %>%
+  select(rate, l95,u95, value=smr_ratio) %>%
+  mutate(type="Microbiologically-confirmed TB") %>%
+  mutate(param = "Smear positive:negative ratio")
+
+pz <- bind_rows(p1, p2, p3, p4, p5, p6, p7,
+                p8, p9, p10, p11, p12, p13, p14)
+
+
+ggplot(pz) +
+  geom_line(aes(x=value, y=rate, group=type, colour=type)) +
+  geom_ribbon(aes(x=value, ymin=l95, ymax=u95, group=type, fill=type), alpha=0.3) +
+  facet_wrap(~param, scales = "free") +
+  ylim(0,1200) +
+  ylab("TB case notification rate per 100,000 (95% credible interval)") +
+  xlab("") +
+  theme_minimal() +
+  theme(legend.position="none")
+
+ggsave(file="Figure3.pdf", 
+       path = here("figures"))
+
+```
+
+
+
+
+##19. Supplemental Figure 3: Predicted and observed TB case notifications
+
+```{r}
+plot_grid(residual1, residual2,
+          labels = c("A", "B"), ncol = 1,
+          label_fontfamily = "Helvetica")
+
+ggsave(file="S3_Fig.pdf", width=8, height=8, dpi=300, 
+       path = here("figures"))
+
+```
+
+

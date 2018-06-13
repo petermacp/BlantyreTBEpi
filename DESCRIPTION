@@ -1,0 +1,30 @@
+Package: BlantyreTBEpi
+Version: 0.0.0.9000
+Title: Analysis of spatial epidemiology of TB in Blantyre, Malawi
+Description: Package to replicate analysis of the manuscipt 
+    "Disparities in access to diagnosis and care in Blantyre, Malawi 
+    identified through enhanced citywide tuberculosis surveillance 
+    and spatial analysis" by MacPherson et. al 2018
+Authors@R: person("Peter", "MacPherson", email = "peter.macpherson@lstmed.ac.uk", role = c("aut", "cre"))
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+ByteCompile: true
+RoxygenNote: 6.0.1
+Imports: 
+    tidyverse,
+    sf,
+    ggthemes,
+    viridis,
+    scales,
+    lubridate,
+    brms,
+    arsenal,
+    knitr,
+    here,
+    spdep,
+    broom,
+    RANN,
+    forcats,
+    cowplot,
+    bayesplot
