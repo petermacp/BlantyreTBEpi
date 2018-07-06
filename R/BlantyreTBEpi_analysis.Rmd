@@ -1299,14 +1299,14 @@ ggsave(file="Figure3.pdf", width=8, height=8, dpi=300,
 
 <br>
 
-##18. Supplemental Figure 3: Predicted and observed TB case notifications
+##18. Supplemental Figure 4: Predicted and observed TB case notifications
 
 ```{r}
 plot_grid(residual1, residual2,
           labels = c("A", "B"), ncol = 1,
           label_fontfamily = "Helvetica")
 
-ggsave(file="S3_Fig.pdf", width=8, height=8, dpi=300, 
+ggsave(file="S4_Fig.pdf", width=8, height=8, dpi=300, 
        path = here("figures"))
 
 ```

@@ -11,7 +11,7 @@ author: |
   |
 
 date: | 
-  | June 13, 2018
+  | July 06, 2018
   |
   | Table of Contents:
 output: 
@@ -50,7 +50,7 @@ library(bayesplot)
 
 ##2. Reproducibility
 
-This analysis was run on *2018-06-13 13:44:18*, using the following system profile and package versions:
+This analysis was run on *2018-07-06 12:53:17*, using the following system profile and package versions:
 
 
 ```r
@@ -959,8 +959,8 @@ all_0 <- brm(bf(n_cases ~
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 1).
 ## 
-## Gradient evaluation took 0.000109 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 1.09 seconds.
+## Gradient evaluation took 7.8e-05 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 0.78 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -977,15 +977,15 @@ all_0 <- brm(bf(n_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 1.38088 seconds (Warm-up)
-##                2.34543 seconds (Sampling)
-##                3.7263 seconds (Total)
+##  Elapsed Time: 1.38124 seconds (Warm-up)
+##                2.34735 seconds (Sampling)
+##                3.72859 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 2).
 ## 
-## Gradient evaluation took 5.4e-05 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 0.54 seconds.
+## Gradient evaluation took 5.5e-05 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 0.55 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -1002,15 +1002,15 @@ all_0 <- brm(bf(n_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 3.21997 seconds (Warm-up)
-##                2.59453 seconds (Sampling)
-##                5.8145 seconds (Total)
+##  Elapsed Time: 3.17501 seconds (Warm-up)
+##                2.51351 seconds (Sampling)
+##                5.68852 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 3).
 ## 
-## Gradient evaluation took 5.8e-05 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 0.58 seconds.
+## Gradient evaluation took 5.5e-05 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 0.55 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -1027,9 +1027,9 @@ all_0 <- brm(bf(n_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 1.92433 seconds (Warm-up)
-##                2.65769 seconds (Sampling)
-##                4.58202 seconds (Total)
+##  Elapsed Time: 1.85724 seconds (Warm-up)
+##                2.70322 seconds (Sampling)
+##                4.56046 seconds (Total)
 ```
 
 ```r
@@ -1061,8 +1061,8 @@ all_1 <- brm(bf(n_cases ~
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 1).
 ## 
-## Gradient evaluation took 0.000166 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 1.66 seconds.
+## Gradient evaluation took 0.000172 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.72 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -1079,15 +1079,15 @@ all_1 <- brm(bf(n_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 9.31899 seconds (Warm-up)
-##                30.4725 seconds (Sampling)
-##                39.7915 seconds (Total)
+##  Elapsed Time: 8.70359 seconds (Warm-up)
+##                28.9534 seconds (Sampling)
+##                37.657 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 2).
 ## 
-## Gradient evaluation took 0.000118 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 1.18 seconds.
+## Gradient evaluation took 0.000107 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.07 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -1104,15 +1104,15 @@ all_1 <- brm(bf(n_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 21.1779 seconds (Warm-up)
-##                13.0551 seconds (Sampling)
-##                34.233 seconds (Total)
+##  Elapsed Time: 21.3726 seconds (Warm-up)
+##                12.9896 seconds (Sampling)
+##                34.3622 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 3).
 ## 
-## Gradient evaluation took 0.000168 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 1.68 seconds.
+## Gradient evaluation took 0.000106 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.06 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -1129,9 +1129,9 @@ all_1 <- brm(bf(n_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 8.54884 seconds (Warm-up)
-##                20.5467 seconds (Sampling)
-##                29.0956 seconds (Total)
+##  Elapsed Time: 8.65288 seconds (Warm-up)
+##                20.5092 seconds (Sampling)
+##                29.1621 seconds (Total)
 ```
 
 ```r
@@ -1163,8 +1163,8 @@ all_2 <- brm(bf(n_cases ~
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 1).
 ## 
-## Gradient evaluation took 0.000182 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 1.82 seconds.
+## Gradient evaluation took 0.00018 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.8 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -1181,15 +1181,15 @@ all_2 <- brm(bf(n_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 8.58559 seconds (Warm-up)
-##                28.4995 seconds (Sampling)
-##                37.0851 seconds (Total)
+##  Elapsed Time: 8.47653 seconds (Warm-up)
+##                28.569 seconds (Sampling)
+##                37.0456 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 2).
 ## 
-## Gradient evaluation took 0.000119 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 1.19 seconds.
+## Gradient evaluation took 0.000109 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.09 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -1206,15 +1206,15 @@ all_2 <- brm(bf(n_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 22.362 seconds (Warm-up)
-##                13.6208 seconds (Sampling)
-##                35.9829 seconds (Total)
+##  Elapsed Time: 20.3745 seconds (Warm-up)
+##                12.8046 seconds (Sampling)
+##                33.1791 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 3).
 ## 
-## Gradient evaluation took 0.000143 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 1.43 seconds.
+## Gradient evaluation took 0.000111 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.11 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -1231,9 +1231,9 @@ all_2 <- brm(bf(n_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 8.75792 seconds (Warm-up)
-##                22.6542 seconds (Sampling)
-##                31.4121 seconds (Total)
+##  Elapsed Time: 8.54259 seconds (Warm-up)
+##                21.3772 seconds (Sampling)
+##                29.9198 seconds (Total)
 ```
 
 ```r
@@ -1265,8 +1265,8 @@ all_3 <- brm(bf(n_cases ~
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 1).
 ## 
-## Gradient evaluation took 0.000254 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 2.54 seconds.
+## Gradient evaluation took 0.0002 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 2 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -1283,15 +1283,15 @@ all_3 <- brm(bf(n_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 9.96623 seconds (Warm-up)
-##                14.3446 seconds (Sampling)
-##                24.3108 seconds (Total)
+##  Elapsed Time: 9.66842 seconds (Warm-up)
+##                13.5258 seconds (Sampling)
+##                23.1942 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 2).
 ## 
-## Gradient evaluation took 0.000125 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 1.25 seconds.
+## Gradient evaluation took 0.000118 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.18 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -1308,15 +1308,15 @@ all_3 <- brm(bf(n_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 23.8226 seconds (Warm-up)
-##                12.7395 seconds (Sampling)
-##                36.5622 seconds (Total)
+##  Elapsed Time: 22.3446 seconds (Warm-up)
+##                11.3841 seconds (Sampling)
+##                33.7287 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 3).
 ## 
-## Gradient evaluation took 0.000178 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 1.78 seconds.
+## Gradient evaluation took 0.000118 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.18 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -1333,9 +1333,9 @@ all_3 <- brm(bf(n_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 10.8909 seconds (Warm-up)
-##                12.9006 seconds (Sampling)
-##                23.7915 seconds (Total)
+##  Elapsed Time: 9.6666 seconds (Warm-up)
+##                11.1829 seconds (Sampling)
+##                20.8495 seconds (Total)
 ```
 
 ```r
@@ -1367,8 +1367,8 @@ all_4 <- brm(bf(n_cases ~
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 1).
 ## 
-## Gradient evaluation took 0.000222 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 2.22 seconds.
+## Gradient evaluation took 0.000232 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 2.32 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -1385,15 +1385,15 @@ all_4 <- brm(bf(n_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 12.5882 seconds (Warm-up)
-##                26.89 seconds (Sampling)
-##                39.4782 seconds (Total)
+##  Elapsed Time: 11.8365 seconds (Warm-up)
+##                23.7575 seconds (Sampling)
+##                35.5939 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 2).
 ## 
-## Gradient evaluation took 0.000139 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 1.39 seconds.
+## Gradient evaluation took 0.000124 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.24 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -1410,15 +1410,15 @@ all_4 <- brm(bf(n_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 27.5635 seconds (Warm-up)
-##                39.7198 seconds (Sampling)
-##                67.2834 seconds (Total)
+##  Elapsed Time: 23.318 seconds (Warm-up)
+##                36.2744 seconds (Sampling)
+##                59.5924 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 3).
 ## 
-## Gradient evaluation took 0.000341 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 3.41 seconds.
+## Gradient evaluation took 0.00014 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.4 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -1435,9 +1435,9 @@ all_4 <- brm(bf(n_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 12.8013 seconds (Warm-up)
-##                25.9984 seconds (Sampling)
-##                38.7996 seconds (Total)
+##  Elapsed Time: 11.6855 seconds (Warm-up)
+##                23.9033 seconds (Sampling)
+##                35.5888 seconds (Total)
 ```
 
 ```r
@@ -1469,8 +1469,8 @@ all_5 <- brm(bf(n_cases ~
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 1).
 ## 
-## Gradient evaluation took 0.000219 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 2.19 seconds.
+## Gradient evaluation took 0.000233 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 2.33 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -1487,15 +1487,15 @@ all_5 <- brm(bf(n_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 11.8067 seconds (Warm-up)
-##                12.8377 seconds (Sampling)
-##                24.6445 seconds (Total)
+##  Elapsed Time: 11.4366 seconds (Warm-up)
+##                12.8223 seconds (Sampling)
+##                24.2589 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 2).
 ## 
-## Gradient evaluation took 0.000132 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 1.32 seconds.
+## Gradient evaluation took 0.000133 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.33 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -1512,15 +1512,15 @@ all_5 <- brm(bf(n_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 26.1182 seconds (Warm-up)
-##                31.8994 seconds (Sampling)
-##                58.0175 seconds (Total)
+##  Elapsed Time: 25.4872 seconds (Warm-up)
+##                31.4269 seconds (Sampling)
+##                56.914 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 3).
 ## 
-## Gradient evaluation took 0.000148 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 1.48 seconds.
+## Gradient evaluation took 0.00014 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.4 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -1537,9 +1537,9 @@ all_5 <- brm(bf(n_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 10.7237 seconds (Warm-up)
-##                26.1674 seconds (Sampling)
-##                36.8911 seconds (Total)
+##  Elapsed Time: 10.4835 seconds (Warm-up)
+##                25.3602 seconds (Sampling)
+##                35.8437 seconds (Total)
 ```
 
 ```r
@@ -1571,8 +1571,8 @@ all_6 <- brm(bf(n_cases ~
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 1).
 ## 
-## Gradient evaluation took 0.000258 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 2.58 seconds.
+## Gradient evaluation took 0.000332 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 3.32 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -1589,9 +1589,9 @@ all_6 <- brm(bf(n_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 11.1372 seconds (Warm-up)
-##                14.3618 seconds (Sampling)
-##                25.499 seconds (Total)
+##  Elapsed Time: 11.0866 seconds (Warm-up)
+##                13.9202 seconds (Sampling)
+##                25.0068 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 2).
@@ -1614,15 +1614,15 @@ all_6 <- brm(bf(n_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 27.6823 seconds (Warm-up)
-##                31.1908 seconds (Sampling)
-##                58.8731 seconds (Total)
+##  Elapsed Time: 27.3091 seconds (Warm-up)
+##                29.0058 seconds (Sampling)
+##                56.3149 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 3).
 ## 
-## Gradient evaluation took 0.00014 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 1.4 seconds.
+## Gradient evaluation took 0.000184 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.84 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -1639,9 +1639,9 @@ all_6 <- brm(bf(n_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 13.2808 seconds (Warm-up)
-##                28.2386 seconds (Sampling)
-##                41.5194 seconds (Total)
+##  Elapsed Time: 11.9438 seconds (Warm-up)
+##                26.9439 seconds (Sampling)
+##                38.8877 seconds (Total)
 ```
 
 ```r
@@ -1822,8 +1822,8 @@ micro_0 <- brm(bf(n_micro_cases ~
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 1).
 ## 
-## Gradient evaluation took 7.9e-05 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 0.79 seconds.
+## Gradient evaluation took 9.1e-05 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 0.91 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -1840,15 +1840,15 @@ micro_0 <- brm(bf(n_micro_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 1.41366 seconds (Warm-up)
-##                2.34022 seconds (Sampling)
-##                3.75387 seconds (Total)
+##  Elapsed Time: 1.28102 seconds (Warm-up)
+##                2.38584 seconds (Sampling)
+##                3.66685 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 2).
 ## 
-## Gradient evaluation took 5.4e-05 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 0.54 seconds.
+## Gradient evaluation took 5.6e-05 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 0.56 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -1865,15 +1865,15 @@ micro_0 <- brm(bf(n_micro_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 3.82608 seconds (Warm-up)
-##                2.45122 seconds (Sampling)
-##                6.2773 seconds (Total)
+##  Elapsed Time: 3.73262 seconds (Warm-up)
+##                2.3955 seconds (Sampling)
+##                6.12812 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 3).
 ## 
-## Gradient evaluation took 5.4e-05 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 0.54 seconds.
+## Gradient evaluation took 5.5e-05 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 0.55 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -1890,9 +1890,9 @@ micro_0 <- brm(bf(n_micro_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 1.66138 seconds (Warm-up)
-##                2.32355 seconds (Sampling)
-##                3.98494 seconds (Total)
+##  Elapsed Time: 1.67107 seconds (Warm-up)
+##                2.37532 seconds (Sampling)
+##                4.04639 seconds (Total)
 ```
 
 ```r
@@ -1924,8 +1924,8 @@ micro_1 <- brm(bf(n_micro_cases ~
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 1).
 ## 
-## Gradient evaluation took 0.000156 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 1.56 seconds.
+## Gradient evaluation took 0.000151 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.51 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -1942,15 +1942,15 @@ micro_1 <- brm(bf(n_micro_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 7.64074 seconds (Warm-up)
-##                10.1993 seconds (Sampling)
-##                17.84 seconds (Total)
+##  Elapsed Time: 7.9091 seconds (Warm-up)
+##                10.352 seconds (Sampling)
+##                18.2611 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 2).
 ## 
-## Gradient evaluation took 0.000104 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 1.04 seconds.
+## Gradient evaluation took 0.000117 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.17 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -1967,15 +1967,15 @@ micro_1 <- brm(bf(n_micro_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 17.5582 seconds (Warm-up)
-##                10.4725 seconds (Sampling)
-##                28.0307 seconds (Total)
+##  Elapsed Time: 17.6705 seconds (Warm-up)
+##                10.4827 seconds (Sampling)
+##                28.1533 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 3).
 ## 
-## Gradient evaluation took 0.000122 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 1.22 seconds.
+## Gradient evaluation took 0.000119 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.19 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -1992,9 +1992,9 @@ micro_1 <- brm(bf(n_micro_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 7.09339 seconds (Warm-up)
-##                10.2396 seconds (Sampling)
-##                17.333 seconds (Total)
+##  Elapsed Time: 7.30759 seconds (Warm-up)
+##                10.5323 seconds (Sampling)
+##                17.8399 seconds (Total)
 ```
 
 ```r
@@ -2026,8 +2026,8 @@ micro_2 <- brm(bf(n_micro_cases ~
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 1).
 ## 
-## Gradient evaluation took 0.000271 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 2.71 seconds.
+## Gradient evaluation took 0.000151 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.51 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -2044,15 +2044,15 @@ micro_2 <- brm(bf(n_micro_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 7.79783 seconds (Warm-up)
-##                10.6214 seconds (Sampling)
-##                18.4192 seconds (Total)
+##  Elapsed Time: 7.70318 seconds (Warm-up)
+##                10.3477 seconds (Sampling)
+##                18.0509 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 2).
 ## 
-## Gradient evaluation took 0.00011 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 1.1 seconds.
+## Gradient evaluation took 0.000105 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.05 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -2069,15 +2069,15 @@ micro_2 <- brm(bf(n_micro_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 17.5248 seconds (Warm-up)
-##                10.1647 seconds (Sampling)
-##                27.6895 seconds (Total)
+##  Elapsed Time: 17.3496 seconds (Warm-up)
+##                10.2726 seconds (Sampling)
+##                27.6222 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 3).
 ## 
-## Gradient evaluation took 0.000104 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 1.04 seconds.
+## Gradient evaluation took 0.000131 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.31 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -2094,9 +2094,9 @@ micro_2 <- brm(bf(n_micro_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 7.05482 seconds (Warm-up)
-##                10.197 seconds (Sampling)
-##                17.2518 seconds (Total)
+##  Elapsed Time: 7.06591 seconds (Warm-up)
+##                10.2446 seconds (Sampling)
+##                17.3105 seconds (Total)
 ```
 
 ```r
@@ -2128,8 +2128,8 @@ micro_3 <- brm(bf(n_micro_cases ~
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 1).
 ## 
-## Gradient evaluation took 0.000189 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 1.89 seconds.
+## Gradient evaluation took 0.000158 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.58 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -2146,15 +2146,15 @@ micro_3 <- brm(bf(n_micro_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 8.70453 seconds (Warm-up)
-##                11.4153 seconds (Sampling)
-##                20.1198 seconds (Total)
+##  Elapsed Time: 7.86726 seconds (Warm-up)
+##                10.9856 seconds (Sampling)
+##                18.8528 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 2).
 ## 
-## Gradient evaluation took 0.000129 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 1.29 seconds.
+## Gradient evaluation took 0.000125 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.25 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -2171,15 +2171,15 @@ micro_3 <- brm(bf(n_micro_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 18.3026 seconds (Warm-up)
-##                11.4149 seconds (Sampling)
-##                29.7175 seconds (Total)
+##  Elapsed Time: 17.6433 seconds (Warm-up)
+##                11.3388 seconds (Sampling)
+##                28.9821 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 3).
 ## 
-## Gradient evaluation took 0.000118 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 1.18 seconds.
+## Gradient evaluation took 0.000143 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.43 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -2196,9 +2196,9 @@ micro_3 <- brm(bf(n_micro_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 7.85062 seconds (Warm-up)
-##                12.2466 seconds (Sampling)
-##                20.0972 seconds (Total)
+##  Elapsed Time: 7.64539 seconds (Warm-up)
+##                11.6534 seconds (Sampling)
+##                19.2988 seconds (Total)
 ```
 
 ```r
@@ -2230,8 +2230,8 @@ micro_4 <- brm(bf(n_micro_cases ~
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 1).
 ## 
-## Gradient evaluation took 0.000286 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 2.86 seconds.
+## Gradient evaluation took 0.000261 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 2.61 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -2248,15 +2248,15 @@ micro_4 <- brm(bf(n_micro_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 9.02173 seconds (Warm-up)
-##                12.1563 seconds (Sampling)
-##                21.178 seconds (Total)
+##  Elapsed Time: 8.82495 seconds (Warm-up)
+##                11.8903 seconds (Sampling)
+##                20.7153 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 2).
 ## 
-## Gradient evaluation took 0.000208 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 2.08 seconds.
+## Gradient evaluation took 0.000118 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.18 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -2273,15 +2273,15 @@ micro_4 <- brm(bf(n_micro_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 20.4258 seconds (Warm-up)
-##                12.2302 seconds (Sampling)
-##                32.6561 seconds (Total)
+##  Elapsed Time: 19.8322 seconds (Warm-up)
+##                11.6956 seconds (Sampling)
+##                31.5278 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 3).
 ## 
-## Gradient evaluation took 0.000163 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 1.63 seconds.
+## Gradient evaluation took 0.000141 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.41 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -2298,9 +2298,9 @@ micro_4 <- brm(bf(n_micro_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 8.7693 seconds (Warm-up)
-##                13.7891 seconds (Sampling)
-##                22.5584 seconds (Total)
+##  Elapsed Time: 8.56559 seconds (Warm-up)
+##                13.8992 seconds (Sampling)
+##                22.4648 seconds (Total)
 ```
 
 ```r
@@ -2332,8 +2332,8 @@ micro_5 <- brm(bf(n_micro_cases ~
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 1).
 ## 
-## Gradient evaluation took 0.00024 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 2.4 seconds.
+## Gradient evaluation took 0.000244 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 2.44 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -2350,15 +2350,15 @@ micro_5 <- brm(bf(n_micro_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 8.93162 seconds (Warm-up)
-##                12.43 seconds (Sampling)
-##                21.3616 seconds (Total)
+##  Elapsed Time: 9.02706 seconds (Warm-up)
+##                12.8342 seconds (Sampling)
+##                21.8612 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 2).
 ## 
-## Gradient evaluation took 0.000202 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 2.02 seconds.
+## Gradient evaluation took 0.000131 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.31 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -2375,15 +2375,15 @@ micro_5 <- brm(bf(n_micro_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 20.6943 seconds (Warm-up)
-##                12.7053 seconds (Sampling)
-##                33.3996 seconds (Total)
+##  Elapsed Time: 20.1074 seconds (Warm-up)
+##                12.716 seconds (Sampling)
+##                32.8234 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 3).
 ## 
-## Gradient evaluation took 0.000129 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 1.29 seconds.
+## Gradient evaluation took 0.000213 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 2.13 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -2400,9 +2400,9 @@ micro_5 <- brm(bf(n_micro_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 8.9923 seconds (Warm-up)
-##                12.6765 seconds (Sampling)
-##                21.6688 seconds (Total)
+##  Elapsed Time: 9.21985 seconds (Warm-up)
+##                12.9576 seconds (Sampling)
+##                22.1774 seconds (Total)
 ```
 
 ```r
@@ -2434,8 +2434,8 @@ micro_6 <- brm(bf(n_micro_cases ~
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 1).
 ## 
-## Gradient evaluation took 0.000262 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 2.62 seconds.
+## Gradient evaluation took 0.000221 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 2.21 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -2452,15 +2452,15 @@ micro_6 <- brm(bf(n_micro_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 9.39002 seconds (Warm-up)
-##                14.2455 seconds (Sampling)
-##                23.6355 seconds (Total)
+##  Elapsed Time: 9.22287 seconds (Warm-up)
+##                13.3492 seconds (Sampling)
+##                22.5721 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 2).
 ## 
-## Gradient evaluation took 0.000224 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 2.24 seconds.
+## Gradient evaluation took 0.000137 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.37 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -2477,15 +2477,15 @@ micro_6 <- brm(bf(n_micro_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 22.6589 seconds (Warm-up)
-##                14.074 seconds (Sampling)
-##                36.7329 seconds (Total)
+##  Elapsed Time: 21.7165 seconds (Warm-up)
+##                13.4344 seconds (Sampling)
+##                35.1509 seconds (Total)
 ## 
 ## 
 ## SAMPLING FOR MODEL 'poisson brms-model' NOW (CHAIN 3).
 ## 
-## Gradient evaluation took 0.000152 seconds
-## 1000 transitions using 10 leapfrog steps per transition would take 1.52 seconds.
+## Gradient evaluation took 0.000142 seconds
+## 1000 transitions using 10 leapfrog steps per transition would take 1.42 seconds.
 ## Adjust your expectations accordingly!
 ## 
 ## 
@@ -2502,9 +2502,9 @@ micro_6 <- brm(bf(n_micro_cases ~
 ## Iteration: 3800 / 4000 [ 95%]  (Sampling)
 ## Iteration: 4000 / 4000 [100%]  (Sampling)
 ## 
-##  Elapsed Time: 9.26178 seconds (Warm-up)
-##                14.1084 seconds (Sampling)
-##                23.3702 seconds (Total)
+##  Elapsed Time: 8.93177 seconds (Warm-up)
+##                13.4243 seconds (Sampling)
+##                22.3561 seconds (Total)
 ```
 
 ```r
@@ -3015,7 +3015,7 @@ ggsave(file="Figure3.pdf", width=8, height=8, dpi=300,
 
 <br>
 
-##18. Supplemental Figure 3: Predicted and observed TB case notifications
+##18. Supplemental Figure 4: Predicted and observed TB case notifications
 
 
 ```r
@@ -3027,7 +3027,7 @@ plot_grid(residual1, residual2,
 ![](BlantyreTBEpi_analysis_files/figure-html/unnamed-chunk-26-1.png)<!-- -->
 
 ```r
-ggsave(file="S3_Fig.pdf", width=8, height=8, dpi=300, 
+ggsave(file="S4_Fig.pdf", width=8, height=8, dpi=300, 
        path = here("figures"))
 ```
 
