@@ -103,7 +103,7 @@ dat %>%
 
 dat %>%
   st_set_geometry(., NULL) %>%
-  summarise(min=max(total))
+  summarise(max=max(total))
 
 dat %>%
   st_set_geometry(., NULL) %>%
@@ -735,6 +735,7 @@ waics6 <- as.tibble(unlist(all_6_ic)) %>% rownames_to_column() %>% filter(rownam
 
 waics <- bind_rows(waics0, waics1, waics2, waics3, waics4, waics5, waics6)
 waics <- waics %>% mutate(value = as.numeric(value)) %>% mutate(value = round(value, digits=2))
+
 
 ests_all_0<- tidy(exp(fixef(all_0)))
 ests_all_0 <- ests_all_0 %>%
