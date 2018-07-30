@@ -549,13 +549,13 @@ Take logarithm of some values
 ```{r}
 
 dat <- dat %>%
-  mutate(log_total = log(total))
+  mutate(log_total = log10(total))
 
 dat <- dat %>%
-  mutate(log_popdens = log(popdens))
+  mutate(log_popdens = log10(popdens))
 
 dat <- dat %>%
-  mutate(log_clinic_distance = log(clinic_distance))
+  mutate(log_clinic_distance = log10(clinic_distance))
 
 
 ```
