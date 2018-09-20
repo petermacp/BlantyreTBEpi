@@ -394,13 +394,12 @@ Compare characteristics of cases located within and outside of HSA catchment are
 
 ```{r,warning=FALSE, results="asis"}
 
-data("all_cases_sf", package="BlantyreTBEpi")
+data("x01_epal2", package="BlantyreTBEpi")
 
-all_cases_sf$year <- fct_drop(all_cases_sf$year)
+x01_epal2$year <- fct_drop(x01_epal2$year)
 
 
-table1 <- tableby(resident ~ year + sex + age + tbclass + smearstatus + hivstatus +
-                    lab_smear + lab_culture + lab_id + any_micro_confirm, data = all_cases_sf)
+table1 <- tableby(resident ~ year + sex + age + tbclass + smearstatus + hivstatus + lab_smear + lab_culture + lab_id + any_micro_confirm, data = x01_epal2)
 
 summary(table1)
 ```
